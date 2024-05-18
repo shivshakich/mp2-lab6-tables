@@ -14,6 +14,7 @@ public:
 	TArrayTable(int = 0);							// default constructor
 	TArrayTable(const TRecord&);					// conversion constructor
 	TArrayTable(const TArrayTable&);				// copy constructor
+	TArrayTable(TArrayTable&&) noexcept;
 	~TArrayTable() override;						// destructor
 
 	// OPERATOR=

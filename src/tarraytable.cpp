@@ -33,7 +33,15 @@ TArrayTable::TArrayTable(const TArrayTable& t) {
 	CurrPos = t.CurrPos;
 
 	for (int i = 0; i < DataCount; ++i)
-		Arr[i] = { t.Arr[i].key, t.Arr[i].val };
+		Arr[i] = t.Arr[i];
+}
+
+TArrayTable::TArrayTable(TArrayTable&& t) noexcept {
+	std::swap(Arr, t.Arr);
+	DataCount = t.DataCount;
+	Eff = t.Eff;
+	Size = t.Size;
+	CurrPos = t.CurrPos;
 }
 
 TArrayTable::~TArrayTable() { delete[] Arr; }
