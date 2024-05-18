@@ -2,13 +2,11 @@
 
 #include "ttable.h"
 
-const size_t TAB_MAX_SIZE = 99;
-
-// таблица на основе массива, доступ к элементам через поле CurrPos
+// (абстрактный класс) таблица на массиве
 class TArrayTable : public TTable {
 protected:
 	TRecord* Arr;			// указатель на начало массива
-	size_t TabSize;			// текущий размер массива, макс. число
+	size_t Size;			// текущий размер массива, макс. число записей (может увеличиться до TAB_MAX_SIZE)
 	int CurrPos;			// (нумерация с 0) для работы с методами итерации
 public:
 	// CONSTRUCTORS & DESTRUCTOR
@@ -16,30 +14,36 @@ public:
 	TArrayTable(int = 0);							// default constructor
 	TArrayTable(const TRecord&);					// conversion constructor
 	TArrayTable(const TArrayTable&);				// copy constructor
-	~TArrayTable() override;
+	~TArrayTable() override;						// destructor
+
+	// OPERATOR=
+	
+	TArrayTable& operator=(const TArrayTable&);
+	TArrayTable& operator=(const TRecord&);
+	TArrayTable& operator=(TArrayTable&&) noexcept;
 
 	// ITERATION METHODS
 
-	void Reset() override;
-	void GoNext() override;
-	bool IsEnd() const noexcept override;
+	void Reset() noexcept;
+	void GoNext() noexcept;
+	bool IsEnd() const noexcept;
 
 	// GET-SET METHODS
 
-	size_t GetSize() const noexcept;
+	size_t GetSize() const noexcept { return Size; }
+
 	TKey GetKey() const override;
+	virtual void SetKey(const TKey&);
+
 	TValue GetValue() const override;
-	TRecord GetRecord() const override;
-	int GetCurrPos() const noexcept;
-
-	void SetKey(const TKey&);
 	void SetValue(const TValue&);
-	void SetRecord(const TRecord&);
-	void SetCurrPos(int);
 
-	// OTHERS METHODS
+	int GetCurrPos() const noexcept;
+	void SetCurrPos(int) noexcept;
 
-	virtual bool IsFull() const noexcept;
+	// OTHER METHODS
+
+	bool IsFull() const noexcept;
 
 	// FindRecord, InsRecord, DelRecord будут реализованы в классе-потомке
 };

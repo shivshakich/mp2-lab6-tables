@@ -1,9 +1,30 @@
 #pragma once
 
-#include <iostream>
+//////////////////////////////////////////////////////////////////////////
+//																		//
+//	[TTable] -----------+---------------------------+					//
+//		|				|							|					//
+//		v				v							v					//
+//	[TArrayTable]	[THashTable]				[TTreeTable]			//
+//		|				|							|					//
+//		|				+---------------+			+-----------+		//
+//		|				|				|			|			|		//
+//		v				v				v			v			v		//
+//	[TScanTable]	[TArrayHash]	[TListHash]	[TAVLTree]	[TRBTRee]	//
+//		|																//
+//		v																//
+//	[TSortTable]														//
+//																		//
+//////////////////////////////////////////////////////////////////////////
 
-typedef int TKey;
-typedef std::string TValue;
+#include <iostream>
+#include <exception>
+#include "tpolynom.h"
+
+#define TAB_MAX_SIZE 100
+
+typedef std::string TKey;
+typedef TPolynom TValue;
 
 using std::ostream;
 
@@ -15,19 +36,19 @@ struct TRecord {
 // таблица состоит из записей (TRecord), каждая из которых имеет свой уникальный ключ (TKey)
 class TTable {
 protected:
-	int DataCount;
-	int eff;
+	int DataCount;							// реальное количество записей в таблице
+	int Eff;
 public:
-	TTable() : DataCount(0), eff(0) {}
+	TTable() : DataCount(0), Eff(0) {}
 	virtual ~TTable() = 0;
 
 	int GetDataCount() const noexcept { return DataCount; }
-	int GetEff() const noexcept { return eff; }
-	void ClearEff() noexcept { eff = 0; }
+	int GetEff() const noexcept { return Eff; }
+	void ClearEff() noexcept { Eff = 0; }
 	bool IsEmpty() const noexcept { return DataCount == 0; }
 
 	virtual bool FindRecord(const TKey&) = 0;
-	virtual bool InsRecord(const TRecord&) = 0;
+	virtual void InsRecord(const TKey&, const TValue&) = 0;
 	virtual void DelRecord(const TKey&) = 0;
 
 	virtual void Reset() = 0;
@@ -36,12 +57,10 @@ public:
 
 	virtual TKey GetKey() const  = 0;
 	virtual TValue GetValue() const  = 0;
-	virtual TRecord GetRecord() const  = 0;
-
 
 	friend ostream& operator<<(ostream& os, TTable& t) {
 		for (t.Reset(); !t.IsEnd(); t.GoNext())
-			os << t.GetKey() << ' ' << t.GetValue() << std::endl;
+			os << t.GetKey() << ' ' << t.GetValue().ToString() << std::endl;
 
 		return os;
 	}

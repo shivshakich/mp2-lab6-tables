@@ -15,21 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\ttable.h">
+    <ClInclude Include="..\..\include\theadring.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\tarraytable.h">
+    <ClInclude Include="..\..\include\tlist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\tscantable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\tsorttable.h">
+    <ClInclude Include="..\..\include\tpolynom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\tarraytable.cpp">
+    <ClCompile Include="..\..\src\tpolynom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
