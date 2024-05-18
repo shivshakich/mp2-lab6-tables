@@ -24,7 +24,7 @@ TScanTable::TScanTable(TScanTable&& t) noexcept {
 	DataCount = t.DataCount;
 	Eff = t.Eff;
 	Size = t.Size;
-	CurrPos = t.Size;
+	CurrPos = int(t.Size);
 }
 
 // OPERATOR=
@@ -52,7 +52,9 @@ TScanTable& TScanTable::operator=(TScanTable&& t) noexcept {
 	DataCount = t.DataCount;
 	Eff = t.Eff;
 	Size = t.Size;
-	CurrPos = t.Size;
+	CurrPos = int(t.Size);
+
+	return *this;
 }
 
 // FIND, INS, DEL
@@ -91,7 +93,7 @@ void TScanTable::InsRecord(const TKey& _key, const TValue& _val) {
 		pointer[Size] = { _key, _val };
 
 		std::swap(Arr, pointer);
-		Eff += Size + 1;
+		Eff += int(Size + 1);
 		++DataCount;
 		Size = tmp;
 

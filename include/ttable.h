@@ -40,7 +40,7 @@ protected:
 	int Eff;
 public:
 	TTable() : DataCount(0), Eff(0) {}
-	virtual ~TTable() = 0;
+	virtual ~TTable() {}			// не делай деструктор базового класса чисто виртуальным
 
 	int GetDataCount() const noexcept { return DataCount; }
 	int GetEff() const noexcept { return Eff; }

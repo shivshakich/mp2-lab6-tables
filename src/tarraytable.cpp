@@ -131,6 +131,24 @@ int TArrayTable::GetCurrPos() const noexcept { return CurrPos; }
 
 void TArrayTable::SetCurrPos(int _p) noexcept { CurrPos = _p; }
 
+// COMPARISON METHODS
+
+bool TArrayTable::operator==(const TArrayTable& t) const noexcept {
+	if (this == &t) return true;
+	else if (this->DataCount != t.DataCount) return false;
+
+	bool res = true;
+
+	for (int i = 0; (i < DataCount) && res; ++i)
+		res = (Arr[i].key == t.Arr[i].key) && (Arr[i].val == t.Arr[i].val);
+
+	return res;
+}
+
+bool TArrayTable::operator!=(const TArrayTable& t) const noexcept {
+	return !this->operator==(t);
+}
+
 // OTHER METHODS 
 
 bool TArrayTable::IsFull() const noexcept { return DataCount == Size; }

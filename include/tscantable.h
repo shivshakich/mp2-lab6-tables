@@ -5,9 +5,10 @@
 // неупорядоченная таблица на массиве 
 class TScanTable : public TArrayTable {
 public:
-	TScanTable(int);
+	TScanTable(int = 0);
 	TScanTable(const TArrayTable&);
 	TScanTable(const TScanTable&);
+	TScanTable(const TRecord& rec) : TArrayTable(rec) {}
 	TScanTable(TScanTable&&) noexcept;
 
 	TScanTable& operator=(const TScanTable&);

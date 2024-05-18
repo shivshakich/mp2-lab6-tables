@@ -15,7 +15,7 @@ public:
 	TArrayTable(const TRecord&);					// conversion constructor
 	TArrayTable(const TArrayTable&);				// copy constructor
 	TArrayTable(TArrayTable&&) noexcept;
-	~TArrayTable() override;						// destructor
+	virtual ~TArrayTable();							// destructor
 
 	// OPERATOR=
 	
@@ -41,6 +41,11 @@ public:
 
 	int GetCurrPos() const noexcept;
 	void SetCurrPos(int) noexcept;
+
+	// COMPARISON METHODS
+
+	bool operator==(const TArrayTable&) const noexcept;
+	bool operator!=(const TArrayTable&) const noexcept;
 
 	// OTHER METHODS
 
