@@ -81,6 +81,7 @@ void TScanTable::InsRecord(const TKey& _key, const TValue& _val) {
 	if (!IsFull()) {
 		Arr[CurrPos] = { _key, _val };
 		++Eff;
+		++DataCount;
 	}
 	else if (IsFull() && Size == TAB_MAX_SIZE) throw std::exception("Max_DataCount");
 	else {		// IsFull() && Size != TAB_MAX_SIZE

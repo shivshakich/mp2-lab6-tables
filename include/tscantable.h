@@ -17,6 +17,7 @@ public:
 	virtual bool FindRecord(const TKey&);
 	virtual void InsRecord(const TKey&, const TValue&);
 	virtual void DelRecord(const TKey&);
+	// может реализовать virtual void InsRecord(const TRecord const []) ?
 
 	// SetKey переопределять не требуется
 };

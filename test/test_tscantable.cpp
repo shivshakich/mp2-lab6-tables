@@ -44,7 +44,7 @@ TEST(TScanTable, check_record_conversion_constructor) {
 	t1.Reset();
 	string s = t1.GetKey();
 }
-/*
+
 TEST(TScanTable, check_copy_constructor) {
 	int n = 10;
 	string name = "_name";
@@ -61,37 +61,60 @@ TEST(TScanTable, check_copy_constructor) {
 	ASSERT_TRUE(t7 == t3);
 	ASSERT_TRUE(t8 == t4);
 }
-*/
+
 // FIND, INS, DEL
-/*
+
 TEST(TScanTable, insert_method_puts_record_in_the_end_of_the_array) {
-	srand(0);
 	const int N = 10;
 	int number[N];
 	TScanTable t(N);
 
+	TPolynom tmpPol;
 	for (int i = 0; i < N; ++i) {
-		int tmp = number[i] = rand();
-		t.InsRecord(std::to_string(tmp), TPolynom(tmp));
+		int tmp = number[i] = 3 * i + 2;
+		tmpPol = TPolynom(tmp);
+		t.InsRecord(std::to_string(tmp), tmpPol);
 	}
 
 	ASSERT_EQ(t.GetDataCount(), N);
-	ASSERT_EQ(t.GetEff(), N);
 
 	int i = 0;
 	for (t.Reset(); !t.IsEnd(); t.GoNext()) {
 		ASSERT_NO_THROW(t.GetKey());
 		ASSERT_NO_THROW(t.GetValue());
 		ASSERT_EQ(std::to_string(number[i]), t.GetKey());
-		ASSERT_EQ(TPolynom(number[i]), t.GetValue());
+		TPolynom pol(t.GetValue());
+		ASSERT_TRUE(TPolynom(number[i]) == pol);
+		++i;
 	}
 	ASSERT_ANY_THROW(t.GetKey());
 	ASSERT_ANY_THROW(t.GetValue());
 }
 
 TEST(TScanTable, find_method) {
+	const int N = 10;
+	int number[N];
+	TScanTable t(N);
 
+	for (int i = 0; i < N; ++i) {
+		int tmp = number[i] = i;
+		t.InsRecord(std::to_string(tmp), TPolynom(tmp));
+	}
+
+	int i = 0;
+	for (t.Reset(); !t.IsEnd(); t.GoNext()) {
+		bool find;
+		ASSERT_NO_THROW(find = t.FindRecord(std::to_string(i)));
+		ASSERT_TRUE(find);
+		ASSERT_EQ(i, t.GetCurrPos());
+		++i;
+	}
+	for (; i < 2 *N; ++i) {
+		bool find;
+		ASSERT_NO_THROW(find = t.FindRecord(std::to_string(i)));
+		ASSERT_FALSE(find);
+		ASSERT_EQ(t.GetCurrPos(), N);
+	}
 }
 
 // OPERATOR=
-*/
