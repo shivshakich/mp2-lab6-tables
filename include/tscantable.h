@@ -10,6 +10,7 @@ public:
 	TScanTable(const TScanTable&);
 	TScanTable(const TRecord& rec) : TArrayTable(rec) {}
 	TScanTable(TScanTable&&) noexcept;
+	virtual ~TScanTable() {}
 
 	TScanTable& operator=(const TScanTable&);
 	TScanTable& operator=(TScanTable&&) noexcept;
