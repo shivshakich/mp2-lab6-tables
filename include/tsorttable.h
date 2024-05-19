@@ -3,11 +3,12 @@
 #include "tscantable.h"
 
 enum SortType  { BUBBLE, QUICK, MERGE };
-enum SearcType { LIN, BIN };
+enum SearchType { LIN, BIN };
 
 class TSortTable : public TScanTable {
 private:
 	SortType SortT;
+	SearchType SearchT;
 
 	void Sort();
 
@@ -37,4 +38,6 @@ public:
 	void SetKey(const TKey&) override;
 	SortType GetSortType() const noexcept;
 	void SetSortType(const SortType&) noexcept;
+	SearchType GetSearchType() const noexcept;
+	void SetSearchType(const SearchType&) noexcept;
 };

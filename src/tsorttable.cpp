@@ -2,11 +2,11 @@
 
 // CONSTRUCTORS
 
-TSortTable::TSortTable(int _size) : TScanTable(_size), SortT(MERGE) {}
+TSortTable::TSortTable(int _size) : TScanTable(_size), SortT(MERGE), SearchT(BIN) {}
 
-TSortTable::TSortTable(const TRecord& rec) : TScanTable(rec), SortT(MERGE) {}
+TSortTable::TSortTable(const TRecord& rec) : TScanTable(rec), SortT(MERGE), SearchT(BIN) {}
 
-TSortTable::TSortTable(const TScanTable& t, SortType s) : TScanTable(t), SortT(s) {
+TSortTable::TSortTable(const TScanTable& t, SortType s) : TScanTable(t), SortT(s), SearchT(BIN) {
 	Sort();
 }
 
@@ -19,6 +19,7 @@ TSortTable::TSortTable(const TSortTable& t) {
 	Size = t.Size;
 	CurrPos = t.CurrPos;
 	SortT = t.SortT;
+	SearchT = t.SearchT;
 
 	for (int i = 0; i < DataCount; ++i) {
 		Arr[i].key = t.Arr[i].key;
@@ -202,9 +203,83 @@ TSortTable& TSortTable::operator=(const TSortTable& t) {
 	Eff = t.Eff;
 	Size = t.Size;
 	CurrPos = t.CurrPos;
+	SortT = t.SortT;
+	SearchT = t.SearchT;
 
 	for (int i = 0; i < DataCount; ++i)
 		Arr[i] = t.Arr[i];
 
 	delete[] pointer;
+
+	return *this;
+}
+
+// GET-SET METHODS
+
+void TSortTable::SetKey(const TKey& _key) {
+	if (CurrPos < 0 || CurrPos >= DataCount) throw std::exception("invalid_current_position");
+
+	Arr[CurrPos].key = _key;
+	BubbleSort();
+}
+
+SortType TSortTable::GetSortType() const noexcept { return SortT; }
+
+void TSortTable::SetSortType(const SortType& _t) noexcept { SortT = _t; }
+
+SearchType TSortTable::GetSearchType() const noexcept { return SearchT; }
+
+void TSortTable::SetSearchType(const SearchType& _st) noexcept { SearchT = _st; }
+
+// FIND, INS, DEL
+
+bool TSortTable::FindRecord(const TKey& _key) {
+	bool res;
+
+	switch (SearchT) {
+	case LIN: res = LinSearch(_key); break;
+	case BIN: res = BinSearch(_key); break;
+	}
+
+	return res;
+}
+
+void TSortTable::InsRecord(const TKey& _key, const TValue& _val) {
+	bool find = FindRecord(_key);
+	if (find) throw std::exception("input_key_exists_in_table");
+
+	if (IsFull() && Size == TAB_MAX_SIZE) throw std::exception("Max_DataCount");
+
+	++DataCount;
+
+	if (!IsFull()) {
+		for (int i = DataCount - 1; i >= CurrPos; --i) {
+			++Eff;
+			Arr[i + 1] = Arr[i];
+		}
+
+		Arr[CurrPos] = { _key, _val };
+		++Eff;
+	}
+	else if (IsFull()) {
+		int tmp = Size * 2 + 1 < TAB_MAX_SIZE ? Size * 2 + 1 : TAB_MAX_SIZE;
+		TRecord* pointer = new TRecord[tmp];
+		if (pointer == nullptr) throw std::exception("TabNoMem");
+
+		for (int i = 0; i < CurrPos; ++i) {
+			++Eff;
+			pointer[i] = Arr[i];
+		}
+		pointer[CurrPos] = { _key, _val };
+		++Eff;
+		for (int i = CurrPos; i < DataCount; ++i) {
+			++Eff;
+			pointer[i + 1] = Arr[i];
+		}
+
+		std::swap(pointer, Arr);
+		Size = tmp;
+
+		delete[] pointer;
+	}
 }
