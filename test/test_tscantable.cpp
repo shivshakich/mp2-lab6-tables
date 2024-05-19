@@ -118,3 +118,26 @@ TEST(TScanTable, find_method) {
 }
 
 // OPERATOR=
+
+TEST(TScanTable, assignment_operator) {
+	const int N = 10;
+	int number[N];
+	TScanTable t(N);
+
+	for (int i = 0; i < N; ++i) {
+		int tmp = number[i] = i;
+		t.InsRecord(std::to_string(tmp), TPolynom(tmp));
+	}
+
+	TScanTable copyTab;
+	copyTab = t;
+
+	ASSERT_EQ(copyTab.GetDataCount(), t.GetDataCount());
+	ASSERT_EQ(copyTab.GetEff(), t.GetEff());
+
+	for (copyTab.Reset(), t.Reset(); !copyTab.IsEnd(); copyTab.GoNext(), t.GoNext()) {
+		ASSERT_TRUE(copyTab.GetKey() == t.GetKey());
+		TPolynom pol1(copyTab.GetValue()), pol2(t.GetValue());
+		ASSERT_TRUE(pol1 == pol2);
+	}
+}
