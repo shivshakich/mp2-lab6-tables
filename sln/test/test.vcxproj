@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\test\test_main.cpp" />
     <ClCompile Include="..\..\test\test_tscantable.cpp" />
+    <ClCompile Include="..\..\test\test_tsorttable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\googletest\googletest.vcxproj">

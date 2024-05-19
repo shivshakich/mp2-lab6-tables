@@ -27,6 +27,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\tarraytable.cpp" />
     <ClCompile Include="..\..\src\tscantable.cpp" />
+    <ClCompile Include="..\..\src\tsorttable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\list and polynom\list and polynom.vcxproj">

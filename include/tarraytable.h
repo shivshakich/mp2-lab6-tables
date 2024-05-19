@@ -2,7 +2,7 @@
 
 #include "ttable.h"
 
-// (абстрактный класс) таблица на массиве
+// таблица на массиве
 class TArrayTable : public TTable {
 protected:
 	TRecord* Arr;			// указатель на начало массива
