@@ -6,7 +6,7 @@ enum SortType  { BUBBLE, QUICK, MERGE };
 enum SearchType { LIN, BIN };
 
 class TSortTable : public TScanTable {
-private:
+protected:
 	SortType SortT;
 	SearchType SearchT;
 

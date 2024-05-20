@@ -23,6 +23,7 @@
     <ClInclude Include="..\..\include\tscantable.h" />
     <ClInclude Include="..\..\include\tsorttable.h" />
     <ClInclude Include="..\..\include\ttable.h" />
+    <ClInclude Include="..\..\include\ttreetable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\tarraytable.cpp" />
