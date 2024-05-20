@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\tarrayhash.h" />
     <ClInclude Include="..\..\include\tarraytable.h" />
     <ClInclude Include="..\..\include\thashtable.h" />
     <ClInclude Include="..\..\include\tscantable.h" />

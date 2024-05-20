@@ -1,7 +1,7 @@
 #include "../include/thashtable.h"
 
 THashTable::THashTable(int _size) : TTable() {
-	if (_size <= 0 || _size > TAB_MAX_SIZE) throw std::exception("invalid_input_size");
+	if (_size < HASH_TAB_MIN_SIZE || _size > TAB_MAX_SIZE) throw std::exception("invalid_input_size");
 	Size = _size;
 }
 

@@ -234,7 +234,7 @@ void TSortTable::SetSearchType(const SearchType& _st) noexcept { SearchT = _st; 
 // FIND, INS, DEL
 
 bool TSortTable::FindRecord(const TKey& _key) {
-	bool res;
+	bool res = false;
 
 	switch (SearchT) {
 	case LIN: res = LinSearch(_key); break;
@@ -282,4 +282,17 @@ void TSortTable::InsRecord(const TKey& _key, const TValue& _val) {
 
 		delete[] pointer;
 	}
+}
+
+void TSortTable::DelRecord(const TKey& _key) {
+	bool find = FindRecord(_key);
+	if (!find) return;
+
+
+	for (int i = CurrPos + 1; i < DataCount; ++i) {
+		++Eff;
+		Arr[i - 1] = Arr[i];
+	}
+	++Eff;
+	--DataCount;
 }

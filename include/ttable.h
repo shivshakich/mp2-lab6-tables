@@ -55,7 +55,7 @@ public:
 	virtual void GoNext() = 0;
 	virtual bool IsEnd() const noexcept = 0;
 
-	virtual TKey GetKey() const  = 0;
+	virtual TKey GetKey() const = 0;
 	virtual TValue GetValue() const  = 0;
 
 	friend ostream& operator<<(ostream& os, TTable& t) {

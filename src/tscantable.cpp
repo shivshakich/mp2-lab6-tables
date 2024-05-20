@@ -104,7 +104,7 @@ void TScanTable::InsRecord(const TKey& _key, const TValue& _val) {
 
 void TScanTable::DelRecord(const TKey& _key) {
 	bool find = FindRecord(_key);
-	if (!find) throw std::exception("Not_find_input_key");
+	if (!find) return;
 
 	Arr[CurrPos] = Arr[Size - 1];
 	--DataCount;
