@@ -20,13 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\tarraytable.h" />
+    <ClInclude Include="..\..\include\thashtable.h" />
     <ClInclude Include="..\..\include\tscantable.h" />
     <ClInclude Include="..\..\include\tsorttable.h" />
     <ClInclude Include="..\..\include\ttable.h" />
-    <ClInclude Include="..\..\include\ttreetable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\tarraytable.cpp" />
+    <ClCompile Include="..\..\src\thashtable.cpp" />
     <ClCompile Include="..\..\src\tscantable.cpp" />
     <ClCompile Include="..\..\src\tsorttable.cpp" />
   </ItemGroup>

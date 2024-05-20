@@ -27,7 +27,7 @@
     <ClInclude Include="..\..\include\tsorttable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ttreetable.h">
+    <ClInclude Include="..\..\include\thashtable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -39,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\tsorttable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\thashtable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
