@@ -12,4 +12,6 @@ public:
 
 	int Hash(int);
 	int Hash(const string&);
+
+	size_t GetSize() const noexcept { return Size; }
 };

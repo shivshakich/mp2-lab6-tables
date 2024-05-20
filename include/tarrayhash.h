@@ -2,21 +2,26 @@
 
 #include "thashtable.h"
 
-// хэш-таблица на массиве
+#define EMPTYREC_KEY "EMPTY"
+#define DELREC_KEY "DEL"
+
+// хэш-таблица на массиве; TKey - это std::string
 class TArrayHash : public THashTable {
 protected:
 	TRecord* pRecs;						// массив 
-	const TRecord EMPTY_REC, DEL_REC;
+	TRecord EmptyRec, DelRec;
 	int CurrPos, FreePos;				// CurrPos - для работы Find, Ins, Del; FreePos - для работы Ins
 	int Step;							// 1 <= Step < Size; Step и Size - взаимно простые числа: НОД(Step, Size) == 1
 
 	void SetStep();
-	void HashHash();
 public:
 	TArrayHash(int = TAB_MAX_SIZE);
 	TArrayHash(const TRecord&);
 	TArrayHash(const TArrayHash&);
 	~TArrayHash();
+
+	TArrayHash& operator=(const TRecord&);
+	TArrayHash& operator=(const TArrayHash&);
 
 	bool FindRecord(const TKey&) override;
 	void InsRecord(const TKey&, const TValue&) override;
@@ -29,6 +34,7 @@ public:
 	TKey GetKey() const override;
 	TValue GetValue() const override;
 
-	void SetKey(const TKey&);
-	void SetValue(const TValue&);
+	void SetValue(TValue&);
+
+	bool IsFull() const noexcept { return DataCount == Size; }
 };
