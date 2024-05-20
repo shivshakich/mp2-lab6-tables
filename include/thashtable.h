@@ -14,4 +14,5 @@ public:
 	int Hash(const string&);
 
 	size_t GetSize() const noexcept { return Size; }
+	bool IsFull() const noexcept { return DataCount == Size; }
 };

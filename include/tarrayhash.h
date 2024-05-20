@@ -35,6 +35,4 @@ public:
 	TValue GetValue() const override;
 
 	void SetValue(TValue&);
-
-	bool IsFull() const noexcept { return DataCount == Size; }
 };
