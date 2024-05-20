@@ -31,6 +31,7 @@
     <ClCompile Include="..\..\src\tarrayhash.cpp" />
     <ClCompile Include="..\..\src\tarraytable.cpp" />
     <ClCompile Include="..\..\src\thashtable.cpp" />
+    <ClCompile Include="..\..\src\tlisthash.cpp" />
     <ClCompile Include="..\..\src\tscantable.cpp" />
     <ClCompile Include="..\..\src\tsorttable.cpp" />
   </ItemGroup>
