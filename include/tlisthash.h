@@ -9,7 +9,6 @@ protected:
 	std::list<TRecord>* pList;					// массив списков
 	int CurrList;								// позиция текущего списка
 	std::list<TRecord>::iterator pCurr;			// для работы find, ins, del
-	size_t MaxListSize;
 public:
 	// _size - размер массива, _maxListSize - макс. длина списка
 	TListHash(int _size = TAB_MAX_SIZE);
@@ -30,5 +29,5 @@ public:
 
 	TKey GetKey() const override;
 	TValue GetValue() const override;
-	void SetValue(const TValue&);
+	void SetValue(TValue&);
 };
