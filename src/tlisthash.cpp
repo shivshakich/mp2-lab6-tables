@@ -14,7 +14,7 @@ TListHash::TListHash(const TRecord& _rec) : THashTable() {
 	if (pList == nullptr) throw std::exception("TabNoMem");
 
 	CurrList = Hash(_rec.key);
-	pList[CurrList].push_front(_rec);
+	pList[CurrList].push_front(TRecord{ _rec.key, _rec.val });
 }
 
 TListHash::TListHash(const TListHash& t) {
@@ -25,8 +25,11 @@ TListHash::TListHash(const TListHash& t) {
 	DataCount = t.DataCount;
 	Size = t.Size;
 
-	for (int i = 0; i < Size; ++i)
-		pList[i] = t.pList[i];
+	//pList[i] = t.pList[i];
+	for (int i = 0; i < Size; ++i) {
+		for (std::list<TRecord>::iterator temp = t.pList[i].begin(); temp != t.pList[i].end(); ++temp)
+			pList[i].push_back(*temp);
+	}
 
 	CurrList = t.CurrList;
 	pCurr = t.pCurr;
@@ -63,9 +66,14 @@ TListHash& TListHash::operator=(const TListHash& t) {
 
 	Eff = t.Eff;
 	DataCount = t.DataCount;
-
+	/*
 	for (int i = 0; i < Size; ++i)
 		pList[i] = t.pList[i];
+	*/
+	for (int i = 0; i < Size; ++i) {
+		for (std::list<TRecord>::iterator temp = t.pList[i].begin(); temp != t.pList[i].end(); ++temp)
+			pList[i].push_back(*temp);
+	}
 
 	CurrList = t.CurrList;
 	pCurr = t.pCurr;
