@@ -15,16 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\test\test_main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\test\test_tscantable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\test\test_tsorttable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\test\test_ttreetable.cpp">
+    <ClCompile Include="..\..\sample\main_sample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
