@@ -21,11 +21,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\tarrayhash.h" />
     <ClInclude Include="..\..\include\tarraytable.h" />
+    <ClInclude Include="..\..\include\tavltree.h" />
     <ClInclude Include="..\..\include\thashtable.h" />
     <ClInclude Include="..\..\include\tlisthash.h" />
+    <ClInclude Include="..\..\include\trbtree.h" />
     <ClInclude Include="..\..\include\tscantable.h" />
     <ClInclude Include="..\..\include\tsorttable.h" />
     <ClInclude Include="..\..\include\ttable.h" />
+    <ClInclude Include="..\..\include\ttreetable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\tarrayhash.cpp" />
@@ -34,6 +37,7 @@
     <ClCompile Include="..\..\src\tlisthash.cpp" />
     <ClCompile Include="..\..\src\tscantable.cpp" />
     <ClCompile Include="..\..\src\tsorttable.cpp" />
+    <ClCompile Include="..\..\src\ttreetable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\list and polynom\list and polynom.vcxproj">
