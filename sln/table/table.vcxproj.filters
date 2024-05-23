@@ -68,5 +68,8 @@
     <ClCompile Include="..\..\src\ttreetable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\tavltree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

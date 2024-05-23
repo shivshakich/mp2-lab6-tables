@@ -6,9 +6,10 @@
 // Дерево поиска - бинарное дерево, где для любой его вершины в левом поддереве находятся значения меньше, чем в этой вершине, а в правом - больше
 class TTreeTable : public TTable {
 protected:
-	struct TTreeNode {
+	virtual struct TTreeNode {
 		TRecord rec;
 		TTreeNode* pLeft = nullptr, * pRight = nullptr;
+		int bal;	// для АВЛ-дерева
 	};
 	TTreeNode *pRoot;
 	TTreeNode *pCurr, *pPrev;
@@ -36,9 +37,9 @@ public:
 
 	// iterator methods: методы обхода - LTR
 
-	void Reset();
-	void GoNext();
-	bool IsEnd() const noexcept;
+	void Reset() override;
+	void GoNext() override;
+	bool IsEnd() const noexcept override;
 
 	TKey GetKey() const override;
 	TValue GetValue() const override;

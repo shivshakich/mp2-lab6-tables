@@ -9,6 +9,7 @@ void TTreeTable::ClearStack() {
 void TTreeTable::CopyTree(const TTreeNode* const _from, TTreeNode* _to) {
 	if (_from == nullptr) return;
 	_to = new TTreeNode{ _from->rec };
+	_to->bal = _from->bal;
 	CopyTree(_from->pLeft, _to->pLeft);
 	CopyTree(_from->pRight, _to->pLeft);
 }
@@ -110,6 +111,7 @@ void TTreeTable::InsRecord(const TKey& _key, const TValue& _val) {
 	bool find = FindRecord(_key);
 	if (find) throw std::exception("duplicate_key");
 
+	++Eff;
 	++DataCount;
 	TTreeNode* addNode = new TTreeNode{ TRecord{_key, _val } };
 
@@ -243,7 +245,7 @@ void TTreeTable::SetValue(const TValue& _val) {
 ostream& TTreeTable::Print(ostream& os, TTreeNode* p) {
 	if (p == nullptr) return os;
 	Print(os, p->pLeft);
-	os << p->rec.key << " - " << p->rec.val << '\n';
+	os << p->rec.key << " = " << p->rec.val << '\n';
 	Print(os, p->pRight);
 	
 	return os;
