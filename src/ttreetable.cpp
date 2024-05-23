@@ -88,7 +88,7 @@ bool TTreeTable::FindRecord(const TKey& _key) {
 	pCurr = pRoot; 
 	pPrev = nullptr;
 
-	while (pCurr != pRoot) {
+	while (pCurr != nullptr) {
 		++Eff;
 
 		if (pCurr->rec.key == _key) break; 
@@ -101,6 +101,7 @@ bool TTreeTable::FindRecord(const TKey& _key) {
 			pCurr = pCurr->pRight;
 	}
 
+	// зайдёт, если pRoot == nullptr и/или ключ не найден
 	if ((res = pCurr == nullptr)) pCurr = pPrev;
 	res = !res;
 

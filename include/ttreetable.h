@@ -6,7 +6,7 @@
 // Дерево поиска - бинарное дерево, где для любой его вершины в левом поддереве находятся значения меньше, чем в этой вершине, а в правом - больше
 class TTreeTable : public TTable {
 protected:
-	virtual struct TTreeNode {
+	struct TTreeNode {
 		TRecord rec;
 		TTreeNode* pLeft = nullptr, * pRight = nullptr;
 		int bal;	// для АВЛ-дерева
@@ -15,7 +15,7 @@ protected:
 	TTreeNode *pCurr, *pPrev;
 
 	// необработанные вершины на пути от корня до текущей запоминаются в стеке
-	std::stack<TTreeNode*> st;		// для обхода дерева
+	std::stack<TTreeNode*> st;		// для обхода дерева: методы reset, gonext, isend
 
 	void ClearStack();
 	void CopyTree(const TTreeNode* const _from, TTreeNode* _to);
@@ -31,7 +31,7 @@ public:
 	TTreeTable& operator=(const TRecord&);
 	TTreeTable& operator=(const TTreeTable&);
 
-	bool FindRecord(const TKey&) override;
+	bool FindRecord(const TKey&) override;	// перемещает pCurr на искомую вершину
 	virtual void InsRecord(const TKey&, const TValue&);
 	virtual void DelRecord(const TKey&);
 
