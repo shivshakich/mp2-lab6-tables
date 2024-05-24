@@ -2,7 +2,7 @@
 
 // LEFT- AND RIGHT- BALANCE
 
-void TAVLTree::LeftBalance(TTreeNode*& pointer) {
+int TAVLTree::LeftBalance(TTreeNode*& pointer) {
 	// в вершине pointer баланс равен -2
 	// у его потомков допустимый баланс
 	// у его левого поддерева баланс либо -1, либо +1
@@ -10,137 +10,160 @@ void TAVLTree::LeftBalance(TTreeNode*& pointer) {
 	// 1) левый потомок - лист (что нарушает условия, при которых следует вызывать LeftBalance)
 	// 2) у левого потомка pointer-вершины два прямых потомка (что говорит о несбалансированности дерева ещё до вызова ins или del)
 
+	int res = H_OK;
 	++Eff;
 
 	TTreeNode * b, * c;
-	switch (pointer->pLeft->bal) {
-	case BAL_LEFT: 
-		// однократный подъём (слева)
-		//////////////////////////////////////////////////////////////////////////////////////
-		//											//										//				
-		//											//				bal= 0					//
-		//						bal= -2				//		 +------[B]------+				//
-		//			 +----------[A]------+			//		 |				 |				//
-		//			 |					 |			//		 v				 v bal = 0		//
-		//			 v	bal= -1			 v			//		[t1]	 +------[A]------+		//
-		//		 +--[B]------+			[t3]		//		[  ]	 |				 |		//
-		//		 |			 |			[  ]		//		[  ]	 v				 v		//
-		//		 v			 v			[  ]		//		[  ]	[t2]			[t3]	//
-		//		[t1]		[t2]		[  ]		//	 ===[xx]====[  ]============[  ]==	//
-		//		[  ]		[  ]		[  ]		//										//
-		//	====[  ]========[  ]=================	//										//
-		//		[xx]								//										//
-		//											//										//
-		//////////////////////////////////////////////////////////////////////////////////////
-		// TTreeNode *a = pointer, *b = pointer->pLeft;
-		// TTreeNode* t1 = b->pLeft, * t2 = b->pRight, * t3 = a->pRight;
 
+	switch (pointer->bal) {
+	case BAL_RIGHT: pointer->bal = BAL_OK; res = H_OK; break;
+	case BAL_OK: pointer->bal = BAL_LEFT; res = H_INC; break;
+	case BAL_LEFT: // нарушение баланса
+		TTreeNode* b, * c;
 		b = pointer->pLeft;
 
-		pointer->pLeft = b->pRight;
-		b->pRight = pointer;
+		switch (b->bal) {
+		case BAL_LEFT:
+			// однократный подъём (слева)
+			//////////////////////////////////////////////////////////////////////////////////////
+			//											//										//				
+			//											//				bal= 0					//
+			//						bal= -2				//		 +------[B]------+				//
+			//			 +----------[A]------+			//		 |				 |				//
+			//			 |					 |			//		 v				 v bal = 0		//
+			//			 v	bal= -1			 v			//		[t1]	 +------[A]------+		//
+			//		 +--[B]------+			[t3]		//		[  ]	 |				 |		//
+			//		 |			 |			[  ]		//		[  ]	 v				 v		//
+			//		 v			 v			[  ]		//		[  ]	[t2]			[t3]	//
+			//		[t1]		[t2]		[  ]		//	 ===[xx]====[  ]============[  ]==	//
+			//		[  ]		[  ]		[  ]		//										//
+			//	====[  ]========[  ]=================	//										//
+			//		[xx]								//										//
+			//											//										//
+			//////////////////////////////////////////////////////////////////////////////////////
+			// TTreeNode *a = pointer, *b = pointer->pLeft;
+			// TTreeNode* t1 = b->pLeft, * t2 = b->pRight, * t3 = a->pRight;
 
-		pointer->bal = BAL_OK;
-		pointer = b;
-		pointer->bal = BAL_OK;
+			pointer->pLeft = b->pRight;
+			b->pRight = pointer;
 
-		// высота дерева с корнем pointer была h+3, стала h+2; высота уменьшилась на 1
-		break;
-	case BAL_RIGHT: 
-		// двукратный подъём (слева)
-		//////////////////////////////////////////////////////////////////////////////////////////
-		//											//
-		//				bal= -2						//
-		//		 +--[A]----------------------+		//
-		//		 |							 |		//
-		//		 v	bal= +1					 v		//
-		//	 +--[B]----------+				[t4]	//
-		//	 |				 |				[  ]	//
-		//	 v				 v	bal= 0		[  ]	//
-		//	[t1]	 +------[C]------+		[  ]	//
-		//	[  ]	 |				 |		[  ]	//
-		//  [  ]	 v				 v		[  ]	//
-		//	[  ]	[t2]			[t3]	[  ]	//
-		//	[  ]	[  ]			[  ]	[  ]	//
-		// =[  ]====[  ]============[  ]=========== //
-		//			[xx]			[xx]			//
-		//											//
-		//////////////////////////////////////////////////////////////////////////////////////////
-
-		b = pointer->pLeft;
-		c = b->pRight;
-
-		b->pRight = c->pLeft;
-		c->pLeft = b;
-		pointer->pLeft = c->pRight;
-		c->pRight = pointer;
-		
-		if (c->bal == BAL_RIGHT) {
-			b->bal = BAL_LEFT;
 			pointer->bal = BAL_OK;
-		}
-		else {
-			b->bal = BAL_OK;
-			pointer->bal = BAL_RIGHT;
-		}
+			pointer = b;
+			pointer->bal = BAL_OK;
 
-		pointer = c;
-		pointer->bal = BAL_OK;
+			break;
+		case BAL_RIGHT:
+			// двукратный подъём (слева)
+			//////////////////////////////////////////////////////////////////////////////////////////
+			//											//
+			//				bal= -2						//
+			//		 +--[A]----------------------+		//
+			//		 |							 |		//
+			//		 v	bal= +1					 v		//
+			//	 +--[B]----------+				[t4]	//
+			//	 |				 |				[  ]	//
+			//	 v				 v	bal= 0		[  ]	//
+			//	[t1]	 +------[C]------+		[  ]	//
+			//	[  ]	 |				 |		[  ]	//
+			//  [  ]	 v				 v		[  ]	//
+			//	[  ]	[t2]			[t3]	[  ]	//
+			//	[  ]	[  ]			[  ]	[  ]	//
+			// =[  ]====[  ]============[  ]=========== //
+			//			[xx]			[xx]			//
+			//											//
+			//////////////////////////////////////////////////////////////////////////////////////////
 
-		// высота дерева с корнем pointer была h+3, стала h+2; высота уменьшилась на 1
+			c = b->pRight;
+
+			b->pRight = c->pLeft;
+			pointer->pLeft = c->pRight;
+			c->pLeft = b;
+			c->pRight = pointer;
+
+			if (c->bal == BAL_RIGHT) {
+				b->bal = BAL_LEFT;
+				pointer->bal = BAL_OK;
+			}
+			else {
+				b->bal = BAL_OK;
+				pointer->bal = BAL_RIGHT;
+			}
+
+			pointer = c;
+			pointer->bal = BAL_OK;
+
+			// высота дерева с корнем pointer была h+3, стала h+2; высота уменьшилась на 1
+			break;
+		default:
+			throw std::exception("Kak?");
+		}
+		
+		res = H_OK;
 		break;
-	default:
-		throw std::exception("Kak?");
 	}
+
+	return res;
 }
 
-void TAVLTree::RightBalance(TTreeNode*& pointer) {
+int TAVLTree::RightBalance(TTreeNode*& pointer) {
 	// pointer->bal == +2
+
+	int res = H_OK;
 
 	++Eff;
 
-	TTreeNode* b, * c;
-	switch (pointer->pRight->bal) {
+	
+
+	switch (pointer->bal) {
+	case BAL_LEFT: pointer->bal = BAL_OK; res = H_OK; break;
+	case BAL_OK: pointer->bal = BAL_RIGHT; res = H_INC; break;
 	case BAL_RIGHT:
-		// однократный подъём (справа)
-
+		TTreeNode* b, * c;
 		b = pointer->pRight;
 
-		pointer->pRight = b->pLeft;
-		b->pLeft = pointer;
+		switch (pointer->pRight->bal) {
+		case BAL_RIGHT:
+			// однократный подъём (справа)
 
-		pointer->bal = BAL_OK;
-		pointer = b;
-		pointer->bal = BAL_OK;
+			pointer->pRight = b->pLeft;
+			b->pLeft = pointer;
 
-		break;
-	case BAL_LEFT:
-		// двукратный подъём (справа)
-
-		b = pointer->pRight;
-		c = b->pLeft;
-
-		b->pLeft = c->pRight;
-		c->pRight = b;
-		pointer->pRight = c->pLeft;
-		c->pLeft = pointer;
-
-		if (c->bal == BAL_LEFT) {
-			b->bal = BAL_RIGHT;
 			pointer->bal = BAL_OK;
-		}
-		else {
-			b->bal = BAL_OK;
-			pointer->bal = BAL_LEFT;
+			pointer = b;
+			pointer->bal = BAL_OK;
+
+			break;
+		case BAL_LEFT:
+			// двукратный подъём (справа)
+
+			c = b->pLeft;
+
+			b->pLeft = c->pRight;
+			c->pRight = b;
+			pointer->pRight = c->pLeft;
+			c->pLeft = pointer;
+
+			if (c->bal == BAL_LEFT) {
+				b->bal = BAL_RIGHT;
+				pointer->bal = BAL_OK;
+			}
+			else {
+				b->bal = BAL_OK;
+				pointer->bal = BAL_LEFT;
+			}
+
+			pointer = c;
+			pointer->bal = BAL_OK;
+
+			break;
+		default: throw std::exception("Kak?"); break; 
 		}
 
-		pointer = c;
-		pointer->bal = BAL_OK;
-
+		res = H_OK;
 		break;
-	default:
-		throw std::exception("Kak?");
 	}
+
+	return res;
 }
 
 // CONSTRUCOTRS
@@ -205,7 +228,130 @@ TAVLTree& TAVLTree::operator=(const TAVLTree& t) {
 	return *this;
 }
 
-// INS, DEL
+// INS, DEL, FINDMIN, REMOVEMIN
+
+TTreeTable::TTreeNode* TAVLTree::FindMin(TTreeNode* pointer) {
+	++Eff;
+
+	if (pointer == nullptr) return pointer;
+
+	while (pointer->pLeft != nullptr) {
+		++Eff;
+		pointer = pointer->pLeft;
+	}
+
+	return pointer;
+}
+
+// убирает, но не удаляет вершину
+int TAVLTree::RemoveMin(TTreeNode*& pointer) {
+	++Eff;
+
+	int res = H_OK;
+
+	if (pointer->pLeft == nullptr) {
+		pointer = pointer->pRight;
+		res = H_DEC;
+	}
+	else {
+		res = RemoveMin(pointer->pLeft);
+		if (res != H_OK)
+			res = RightBalance(pointer);
+	}
+
+	return res;
+}
+
+int TAVLTree::InsRecord(TTreeNode*& pointer, const TKey& _key, const TValue& _val) {
+	int res = H_OK;
+
+	++Eff;
+
+	if (pointer == nullptr) {
+		pointer = new TTreeNode{ TRecord{_key, _val} };
+		pointer->bal = BAL_OK;
+
+		res = H_INC;
+		++DataCount;
+	}
+	else if (pointer->rec.key == _key) throw std::exception("duplicate_key");
+	else if (_key < pointer->rec.key) {
+		if (InsRecord(pointer->pLeft, _key, _val) == H_INC) 
+			res = LeftBalance(pointer);
+	}
+	else { // _key > pointer->rec.key
+		if (InsRecord(pointer->pRight, _key, _val) == H_INC)
+			res = RightBalance(pointer);
+	}
+
+	return res;
+}
+
+void TAVLTree::InsRecord(const TKey& _key, const TValue& _val) { 
+	if (FindRecord(_key)) throw std::exception("duplicate_key");
+
+	InsRecord(pRoot, _key, _val);
+}
+
+int TAVLTree::DelRecord(TTreeNode*& pointer, const TKey& _key) {
+	++Eff;
+
+	int res;
+
+	if (pointer == nullptr) return H_OK;
+	else if (_key < pointer->rec.key) {
+		res = DelRecord(pointer->pLeft, _key);
+		if (res != H_OK) res = RightBalance(pointer);
+	}
+	else if (_key > pointer->rec.key) {
+		res = DelRecord(pointer->pRight, _key);
+		if (res != H_OK) res = LeftBalance(pointer);
+	}
+	else {
+		--DataCount;
+
+		bool l = pointer->pLeft == nullptr, r = pointer->pRight == nullptr;
+
+		if (l && r) {
+			delete pointer;
+			pointer = nullptr;
+			res = H_DEC;
+		}
+		else if (r) {
+			pointer->rec = pointer->pLeft->rec;
+			delete pointer->pLeft;
+			pointer->pLeft = nullptr;
+			pointer->bal = BAL_OK;
+			res = H_DEC;
+		}
+		else if (l) {
+			pointer->rec = pointer->pRight->rec;
+			delete pointer->pRight;
+			pointer->pRight = nullptr;
+			pointer->bal = BAL_OK;
+			res = H_DEC;
+		}
+		else {
+			TTreeNode* left = pointer->pLeft, * right = pointer->pRight;
+			TTreeNode* min = FindMin(right);
+			res = RemoveMin(right);
+			pointer->rec = min->rec;
+			delete min;
+			pointer->pLeft = left;
+			pointer->pRight = right;
+
+			if (res != H_OK) res = LeftBalance(pointer);
+		}
+	}
+
+	return res;
+}
+
+void TAVLTree::DelRecord(const TKey& _key) { 
+	if (!FindRecord(_key)) return;
+	
+	DelRecord(pRoot, _key); 
+}
 
 /*
 void TAVLTree::InsRecord(TTreeNode*& pointer, const TKey& _key, const TValue& _val) {
@@ -233,6 +379,7 @@ void TAVLTree::InsRecord(TTreeNode*& pointer, const TKey& _key, const TValue& _v
 }
 */
 
+/*
 void TAVLTree::InsRecord(const TKey& _key, const TValue& _val) {
 	// выкинет исключение если уже существует запись с ключом _key
 	
@@ -315,7 +462,7 @@ void TAVLTree::InsRecord(const TKey& _key, const TValue& _val) {
 	pCurr = nullptr;
 	pPrev = nullptr;
 }
-
+*/
 /*
 
 // вводим рекурсивно вызываемый метод del, для запоминания пути от корня до вставляемой вершины
@@ -348,6 +495,7 @@ void TAVLTree::DelRecord(const TKey& _key) {
 
 */
 
+/*
 void TAVLTree::DelRecord(const TKey& _key) {
 	// БУДЕМ СЧИТАТЬ, ЧТО ДО ВЫЗОВА DEL-МЕТОДА, ДЕРЕВО БЫЛО СБАЛАНСИРОВАННЫМ
 
@@ -420,3 +568,4 @@ void TAVLTree::DelRecord(const TKey& _key) {
 	pCurr = nullptr;
 	pPrev = nullptr;
 }
+*/
