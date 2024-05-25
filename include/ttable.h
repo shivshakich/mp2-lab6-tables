@@ -45,6 +45,7 @@ public:
 
 	int GetDataCount() const noexcept { return DataCount; }
 	int GetEff() const noexcept { return Eff; }
+	int GetTabMaxSize() const noexcept { return TAB_MAX_SIZE; }
 	void ClearEff() noexcept { Eff = 0; }
 	bool IsEmpty() const noexcept { return DataCount == 0; }
 

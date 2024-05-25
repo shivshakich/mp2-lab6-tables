@@ -250,8 +250,6 @@ void TSortTable::InsRecord(const TKey& _key, const TValue& _val) {
 
 	if (IsFull() && Size == TAB_MAX_SIZE) throw std::exception("Max_DataCount");
 
-	++DataCount;
-
 	if (!IsFull()) {
 		for (int i = DataCount - 1; i >= CurrPos; --i) {
 			++Eff;
@@ -282,6 +280,8 @@ void TSortTable::InsRecord(const TKey& _key, const TValue& _val) {
 
 		delete[] pointer;
 	}
+
+	++DataCount;
 }
 
 void TSortTable::DelRecord(const TKey& _key) {

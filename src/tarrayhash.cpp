@@ -141,8 +141,9 @@ void TArrayHash::Reset() {
 }
 
 void TArrayHash::GoNext() {
-	if (CurrPos < 0) throw std::exception("invalid_current_position");
+	if (CurrPos < 0 || CurrPos > Size) throw std::exception("invalid_current_position");
 
+	++CurrPos;
 	for (; CurrPos < Size; ++CurrPos)
 		if (pRecs[CurrPos].key != EMPTYREC_KEY && pRecs[CurrPos].key != DELREC_KEY)
 			break;

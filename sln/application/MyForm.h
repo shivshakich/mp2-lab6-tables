@@ -1,6 +1,48 @@
 #pragma once
 
+#include <msclr/marshal_cppstd.h>
+#include <string>
+
+#include "../../include/tscantable.h"	// неупорядоченная таблица
+#include "../../include/tsorttable.h"	// упорядоченная таблица
+#include "../../include/tarrayhash.h"	// хэш-таблица (массив)
+#include "../../include/tlisthash.h"	// хэш-таблица (список)
+#include "../../include/ttreetable.h"	// дерево поиска
+#include "../../include/tavltree.h"		// АВЛ-дерево
+
 namespace CppWinForm1 {
+
+	const std::string ABC = "0123456789"; //abcde"; //fghijklmnopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ";
+	const int LEN_ABC = ABC.length();
+
+	std::string GetRandKey(int _len = 10) {
+		std::string res = "";
+
+		for (int i = 0; i < _len; ++i) {
+			res += ABC[rand() % LEN_ABC];
+		}
+
+		return res;
+	}
+
+	TPolynom GetRandVal(int _len = 3) {
+		TPolynom pol;
+
+		const int MIN = pol.GetMINDEGREE();
+		const int MAX = pol.GetMAXDEGREE();
+
+		for (int i = 0; i < _len; ++i) {
+			double c = (rand() % 21) - 10;	// -10...+10
+			int x = (rand() % (MAX - MIN)) - MIN;
+			int y = (rand() % (MAX - MIN)) - MIN;
+			int z = (rand() % (MAX - MIN)) - MIN;
+
+			pol += TMonom{ c, x, y, z };
+		}
+			
+
+		return pol;
+	}
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -21,6 +63,8 @@ namespace CppWinForm1 {
 			//
 			//TODO: Add the constructor code here
 			//
+
+			
 		}
 
 	protected:
@@ -29,6 +73,8 @@ namespace CppWinForm1 {
 		/// </summary>
 		~MyForm()
 		{
+			delete tab;
+
 			if (components)
 			{
 				delete components;
@@ -46,7 +92,7 @@ namespace CppWinForm1 {
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::Label^ label4;
 	private: System::Windows::Forms::RadioButton^ radioButton6;
-	private: System::Windows::Forms::RadioButton^ radioButton5;
+
 	private: System::Windows::Forms::RadioButton^ radioButton4;
 	private: System::Windows::Forms::RadioButton^ radioButton3;
 	private: System::Windows::Forms::RadioButton^ radioButton2;
@@ -71,9 +117,33 @@ namespace CppWinForm1 {
 
 
 	protected:
+		int count;
+		TTable* tab;
 
+		void RefreshDataGridView() {
+			dataGridView1->Rows->Clear();
 
+			int i = 0;
+			for (tab->Reset(); !tab->IsEnd(); tab->GoNext()) {
+				dataGridView1->Rows->Add();
+				String^ s_key = gcnew String(tab->GetKey().c_str());
+				String^ s_val = gcnew String(tab->GetValue().ToString().c_str());
+				dataGridView1->Rows[i]->Cells[1]->Value = s_key;
+				dataGridView1->Rows[i]->Cells[2]->Value = s_val;
 
+				++i;
+			}
+		}
+
+		void RefreshEff() {
+			String^ s_eff = gcnew String(std::to_string(tab->GetEff()).c_str());
+			textBox1->Text = s_eff;
+		}
+
+	private: System::Windows::Forms::RadioButton^ radioButton5;
+	private: System::Windows::Forms::Label^ label8;
+	private: System::Windows::Forms::TextBox^ textBox6;
+	protected:
 
 	private:
 		/// <summary>
@@ -97,14 +167,14 @@ namespace CppWinForm1 {
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
-			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButton4 = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButton5 = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButton6 = (gcnew System::Windows::Forms::RadioButton());
 			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->radioButton6 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton5 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton4 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
@@ -116,6 +186,8 @@ namespace CppWinForm1 {
 			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
 			this->button5 = (gcnew System::Windows::Forms::Button());
 			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->textBox6 = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
@@ -205,69 +277,14 @@ namespace CppWinForm1 {
 			this->panel1->Size = System::Drawing::Size(301, 296);
 			this->panel1->TabIndex = 5;
 			// 
-			// label3
+			// label4
 			// 
-			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(4, 4);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(91, 16);
-			this->label3->TabIndex = 0;
-			this->label3->Text = L"Тип таблицы";
-			// 
-			// radioButton1
-			// 
-			this->radioButton1->AutoSize = true;
-			this->radioButton1->Location = System::Drawing::Point(7, 24);
-			this->radioButton1->Name = L"radioButton1";
-			this->radioButton1->Size = System::Drawing::Size(206, 20);
-			this->radioButton1->TabIndex = 1;
-			this->radioButton1->TabStop = true;
-			this->radioButton1->Text = L"Неупорядоченная таблица";
-			this->radioButton1->UseVisualStyleBackColor = true;
-			// 
-			// radioButton2
-			// 
-			this->radioButton2->AutoSize = true;
-			this->radioButton2->Location = System::Drawing::Point(7, 51);
-			this->radioButton2->Name = L"radioButton2";
-			this->radioButton2->Size = System::Drawing::Size(189, 20);
-			this->radioButton2->TabIndex = 2;
-			this->radioButton2->TabStop = true;
-			this->radioButton2->Text = L"Упорядоченная таблица";
-			this->radioButton2->UseVisualStyleBackColor = true;
-			// 
-			// radioButton3
-			// 
-			this->radioButton3->AutoSize = true;
-			this->radioButton3->Location = System::Drawing::Point(7, 78);
-			this->radioButton3->Name = L"radioButton3";
-			this->radioButton3->Size = System::Drawing::Size(170, 20);
-			this->radioButton3->TabIndex = 3;
-			this->radioButton3->TabStop = true;
-			this->radioButton3->Text = L"Хэш-таблица (массив)";
-			this->radioButton3->UseVisualStyleBackColor = true;
-			// 
-			// radioButton4
-			// 
-			this->radioButton4->AutoSize = true;
-			this->radioButton4->Location = System::Drawing::Point(7, 105);
-			this->radioButton4->Name = L"radioButton4";
-			this->radioButton4->Size = System::Drawing::Size(168, 20);
-			this->radioButton4->TabIndex = 4;
-			this->radioButton4->TabStop = true;
-			this->radioButton4->Text = L"Хэш-таблица (список)";
-			this->radioButton4->UseVisualStyleBackColor = true;
-			// 
-			// radioButton5
-			// 
-			this->radioButton5->AutoSize = true;
-			this->radioButton5->Location = System::Drawing::Point(7, 132);
-			this->radioButton5->Name = L"radioButton5";
-			this->radioButton5->Size = System::Drawing::Size(126, 20);
-			this->radioButton5->TabIndex = 5;
-			this->radioButton5->TabStop = true;
-			this->radioButton5->Text = L"Дерево поиска";
-			this->radioButton5->UseVisualStyleBackColor = true;
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(4, 280);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(102, 16);
+			this->label4->TabIndex = 7;
+			this->label4->Text = L"КЧ-дерева нет";
 			// 
 			// radioButton6
 			// 
@@ -280,14 +297,69 @@ namespace CppWinForm1 {
 			this->radioButton6->Text = L"АВЛ-дерево";
 			this->radioButton6->UseVisualStyleBackColor = true;
 			// 
-			// label4
+			// radioButton5
 			// 
-			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(4, 280);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(102, 16);
-			this->label4->TabIndex = 7;
-			this->label4->Text = L"КЧ-дерева нет";
+			this->radioButton5->AutoSize = true;
+			this->radioButton5->Location = System::Drawing::Point(7, 132);
+			this->radioButton5->Name = L"radioButton5";
+			this->radioButton5->Size = System::Drawing::Size(126, 20);
+			this->radioButton5->TabIndex = 5;
+			this->radioButton5->TabStop = true;
+			this->radioButton5->Text = L"Дерево поиска";
+			this->radioButton5->UseVisualStyleBackColor = true;
+			// 
+			// radioButton4
+			// 
+			this->radioButton4->AutoSize = true;
+			this->radioButton4->Location = System::Drawing::Point(7, 105);
+			this->radioButton4->Name = L"radioButton4";
+			this->radioButton4->Size = System::Drawing::Size(168, 20);
+			this->radioButton4->TabIndex = 4;
+			this->radioButton4->TabStop = true;
+			this->radioButton4->Text = L"Хэш-таблица (список)";
+			this->radioButton4->UseVisualStyleBackColor = true;
+			// 
+			// radioButton3
+			// 
+			this->radioButton3->AutoSize = true;
+			this->radioButton3->Location = System::Drawing::Point(7, 78);
+			this->radioButton3->Name = L"radioButton3";
+			this->radioButton3->Size = System::Drawing::Size(170, 20);
+			this->radioButton3->TabIndex = 3;
+			this->radioButton3->TabStop = true;
+			this->radioButton3->Text = L"Хэш-таблица (массив)";
+			this->radioButton3->UseVisualStyleBackColor = true;
+			// 
+			// radioButton2
+			// 
+			this->radioButton2->AutoSize = true;
+			this->radioButton2->Location = System::Drawing::Point(7, 51);
+			this->radioButton2->Name = L"radioButton2";
+			this->radioButton2->Size = System::Drawing::Size(189, 20);
+			this->radioButton2->TabIndex = 2;
+			this->radioButton2->TabStop = true;
+			this->radioButton2->Text = L"Упорядоченная таблица";
+			this->radioButton2->UseVisualStyleBackColor = true;
+			// 
+			// radioButton1
+			// 
+			this->radioButton1->AutoSize = true;
+			this->radioButton1->Location = System::Drawing::Point(7, 24);
+			this->radioButton1->Name = L"radioButton1";
+			this->radioButton1->Size = System::Drawing::Size(206, 20);
+			this->radioButton1->TabIndex = 1;
+			this->radioButton1->TabStop = true;
+			this->radioButton1->Text = L"Неупорядоченная таблица";
+			this->radioButton1->UseVisualStyleBackColor = true;
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(4, 4);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(91, 16);
+			this->label3->TabIndex = 0;
+			this->label3->Text = L"Тип таблицы";
 			// 
 			// button1
 			// 
@@ -297,6 +369,7 @@ namespace CppWinForm1 {
 			this->button1->TabIndex = 6;
 			this->button1->Text = L"Создать таблицу с заданным количеством записей";
 			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
 			// button2
 			// 
@@ -334,7 +407,7 @@ namespace CppWinForm1 {
 			// 
 			// button4
 			// 
-			this->button4->Location = System::Drawing::Point(662, 532);
+			this->button4->Location = System::Drawing::Point(662, 689);
 			this->button4->Name = L"button4";
 			this->button4->Size = System::Drawing::Size(101, 23);
 			this->button4->TabIndex = 11;
@@ -344,7 +417,7 @@ namespace CppWinForm1 {
 			// label6
 			// 
 			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(326, 537);
+			this->label6->Location = System::Drawing::Point(326, 694);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(41, 16);
 			this->label6->TabIndex = 12;
@@ -352,7 +425,7 @@ namespace CppWinForm1 {
 			// 
 			// textBox4
 			// 
-			this->textBox4->Location = System::Drawing::Point(469, 533);
+			this->textBox4->Location = System::Drawing::Point(469, 690);
 			this->textBox4->Name = L"textBox4";
 			this->textBox4->Size = System::Drawing::Size(187, 22);
 			this->textBox4->TabIndex = 13;
@@ -360,14 +433,14 @@ namespace CppWinForm1 {
 			// 
 			// textBox5
 			// 
-			this->textBox5->Location = System::Drawing::Point(469, 562);
+			this->textBox5->Location = System::Drawing::Point(469, 719);
 			this->textBox5->Name = L"textBox5";
 			this->textBox5->Size = System::Drawing::Size(187, 22);
 			this->textBox5->TabIndex = 14;
 			// 
 			// button5
 			// 
-			this->button5->Location = System::Drawing::Point(662, 560);
+			this->button5->Location = System::Drawing::Point(662, 717);
 			this->button5->Name = L"button5";
 			this->button5->Size = System::Drawing::Size(101, 23);
 			this->button5->TabIndex = 15;
@@ -377,11 +450,27 @@ namespace CppWinForm1 {
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(326, 567);
+			this->label7->Location = System::Drawing::Point(326, 724);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(66, 16);
 			this->label7->TabIndex = 16;
 			this->label7->Text = L"Полином";
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Location = System::Drawing::Point(326, 532);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(105, 16);
+			this->label8->TabIndex = 17;
+			this->label8->Text = L"Число записей";
+			// 
+			// textBox6
+			// 
+			this->textBox6->Location = System::Drawing::Point(469, 532);
+			this->textBox6->Name = L"textBox6";
+			this->textBox6->Size = System::Drawing::Size(187, 22);
+			this->textBox6->TabIndex = 18;
 			// 
 			// MyForm
 			// 
@@ -389,6 +478,8 @@ namespace CppWinForm1 {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::PaleGoldenrod;
 			this->ClientSize = System::Drawing::Size(782, 753);
+			this->Controls->Add(this->textBox6);
+			this->Controls->Add(this->label8);
 			this->Controls->Add(this->label7);
 			this->Controls->Add(this->button5);
 			this->Controls->Add(this->textBox5);
@@ -418,5 +509,58 @@ namespace CppWinForm1 {
 #pragma endregion
 	private: System::Void textBox4_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
+private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	// [Создать таблицу с заданным количеством записей]
+
+	std::string err = "";
+
+	try {
+		std::string strCount = msclr::interop::marshal_as<std::string>(textBox6->Text);
+
+		err = "Не удалось прочитать число записей";
+
+		size_t len = 0;
+		int count = std::stoi(strCount, &len);
+
+		if (len != strCount.length()) throw "";
+
+		err = "Введённое число выходит за границу допустимых значений";
+		if (count > tab->GetTabMaxSize()) throw "";
+
+		delete tab;
+
+		err = "Не был выбран radio button";
+		if (radioButton1->Checked)
+			tab = new TScanTable(count);
+		else if (radioButton2->Checked)
+			tab = new TSortTable;
+		else if (radioButton3->Checked)
+			tab = new TArrayHash;
+		else if (radioButton4->Checked)
+			tab = new TListHash;
+		else if (radioButton5->Checked)
+			tab = new TTreeTable;
+		else if (radioButton6->Checked)
+			tab = new TAVLTree;
+		else throw "";
+
+		err = "не удалось вставить запись";
+
+		for (int i = 0; i < count; ++i) {
+			err += " " + std::to_string(i);
+			tab->InsRecord(GetRandKey(), GetRandVal());
+		}
+
+		String^ s_datacount = gcnew String(std::to_string(tab->GetDataCount()).c_str());
+		textBox6->Text = s_datacount;
+
+		RefreshDataGridView();
+		RefreshEff();
+	}
+	catch (...) {
+		String^ s = gcnew String(err.c_str());
+		System::Windows::Forms::MessageBox::Show(s);
+	}
+}
 };
 }
