@@ -59,12 +59,13 @@ namespace CppWinForm1 {
 	public:
 		MyForm(void)
 		{
+			
+
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
 			//
 
-			
 		}
 
 	protected:
@@ -118,7 +119,7 @@ namespace CppWinForm1 {
 
 	protected:
 		int count;
-		TTable* tab;
+		TTable* tab = new TScanTable;;
 
 		void RefreshDataGridView() {
 			dataGridView1->Rows->Clear();
@@ -138,6 +139,11 @@ namespace CppWinForm1 {
 		void RefreshEff() {
 			String^ s_eff = gcnew String(std::to_string(tab->GetEff()).c_str());
 			textBox1->Text = s_eff;
+		}
+
+		void PrintResult(const std::string& _str) {
+			String^ s_res = gcnew String(_str.c_str());
+			textBox2->Text = s_res;
 		}
 
 	private: System::Windows::Forms::RadioButton^ radioButton5;
@@ -203,8 +209,9 @@ namespace CppWinForm1 {
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->RowHeadersWidth = 51;
 			this->dataGridView1->RowTemplate->Height = 24;
-			this->dataGridView1->Size = System::Drawing::Size(750, 400);
+			this->dataGridView1->Size = System::Drawing::Size(900, 400);
 			this->dataGridView1->TabIndex = 0;
+			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::dataGridView1_CellContentClick);
 			// 
 			// Column1
 			// 
@@ -413,6 +420,7 @@ namespace CppWinForm1 {
 			this->button4->TabIndex = 11;
 			this->button4->Text = L"Поиск";
 			this->button4->UseVisualStyleBackColor = true;
+			this->button4->Click += gcnew System::EventHandler(this, &MyForm::button4_Click);
 			// 
 			// label6
 			// 
@@ -446,6 +454,7 @@ namespace CppWinForm1 {
 			this->button5->TabIndex = 15;
 			this->button5->Text = L"Добавить\r\n";
 			this->button5->UseVisualStyleBackColor = true;
+			this->button5->Click += gcnew System::EventHandler(this, &MyForm::button5_Click);
 			// 
 			// label7
 			// 
@@ -477,7 +486,7 @@ namespace CppWinForm1 {
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::PaleGoldenrod;
-			this->ClientSize = System::Drawing::Size(782, 753);
+			this->ClientSize = System::Drawing::Size(1182, 753);
 			this->Controls->Add(this->textBox6);
 			this->Controls->Add(this->label8);
 			this->Controls->Add(this->label7);
@@ -518,6 +527,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		std::string strCount = msclr::interop::marshal_as<std::string>(textBox6->Text);
 
 		err = "Не удалось прочитать число записей";
+		std::string tabType = "";
 
 		size_t len = 0;
 		int count = std::stoi(strCount, &len);
@@ -531,17 +541,17 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 
 		err = "Не был выбран radio button";
 		if (radioButton1->Checked)
-			tab = new TScanTable(count);
+			tab = new TScanTable(count), tabType = "TScanTable";
 		else if (radioButton2->Checked)
-			tab = new TSortTable;
+			tab = new TSortTable, tabType = "TSortTable";
 		else if (radioButton3->Checked)
-			tab = new TArrayHash;
+			tab = new TArrayHash, tabType = "TArrayHash";
 		else if (radioButton4->Checked)
-			tab = new TListHash;
+			tab = new TListHash, tabType = "TListHash";
 		else if (radioButton5->Checked)
-			tab = new TTreeTable;
+			tab = new TTreeTable, tabType = "TTreeTable";
 		else if (radioButton6->Checked)
-			tab = new TAVLTree;
+			tab = new TAVLTree, tabType = "TAVLTree";
 		else throw "";
 
 		err = "не удалось вставить запись";
@@ -551,16 +561,92 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 			tab->InsRecord(GetRandKey(), GetRandVal());
 		}
 
-		String^ s_datacount = gcnew String(std::to_string(tab->GetDataCount()).c_str());
-		textBox6->Text = s_datacount;
+		//String^ s_datacount = gcnew String(std::to_string(tab->GetDataCount()).c_str());
+		//textBox6->Text = s_datacount;
 
 		RefreshDataGridView();
 		RefreshEff();
+		PrintResult("Создана новая таблица типа " + tabType + " из " + std::to_string(tab->GetDataCount()) + " записей");
 	}
 	catch (...) {
 		String^ s = gcnew String(err.c_str());
 		System::Windows::Forms::MessageBox::Show(s);
+		PrintResult("ОШИБКА: не удалось создать таблицу");
 	}
+}
+private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
+	// [поиск]
+
+	std::string err = "Ошибка при поиске по ключу";
+
+	try {
+		std::string strKey = msclr::interop::marshal_as<std::string>(textBox4->Text);
+
+		tab->ClearEff();
+		bool res = tab->FindRecord(strKey);
+		
+		std::string strRes = res ? "Ключ найден" : "Ключ не найден";
+		RefreshEff();
+		PrintResult(strRes);
+	}
+	catch (...) {
+		String^ s_err = gcnew String(err.c_str());
+		System::Windows::Forms::MessageBox::Show(s_err);
+	}
+}
+private: System::Void button5_Click(System::Object^ sender, System::EventArgs^ e) {
+	// [добавить]
+
+	std::string err = "Ошибка при добавлении новой записи";
+
+	try {
+		std::string strKey = msclr::interop::marshal_as<std::string>(textBox4->Text);
+		std::string strVal = msclr::interop::marshal_as<std::string>(textBox5->Text);
+
+
+		tab->ClearEff();
+		err = "Программа не смогла вставить запись в таблицу";
+		tab->InsRecord(strKey, TPolynom(strVal));
+
+		std::string strRes = "Программа смогла вставить запись в таблицу";
+		RefreshDataGridView();
+		RefreshEff();
+		PrintResult(strRes);
+	}
+	catch (...) {
+		String^ s_err = gcnew String(err.c_str());
+		System::Windows::Forms::MessageBox::Show(s_err);
+	}
+}
+private: System::Void dataGridView1_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+	// [удалить]
+
+	std::string strRes = "Вызов Delete не произошёл";
+
+	if (tab->GetDataCount() != 0) {
+
+		int _row = dataGridView1->CurrentCell->RowIndex;
+		//int _column = dataGridView1->CurrentCell->ColumnIndex;
+		//PrintResult(std::to_string(_row) + ' ' + std::to_string(_column));
+
+		String^ s_key = dataGridView1->Rows[_row]->Cells[1]->Value->ToString();
+		std::string _key = msclr::interop::marshal_as<std::string>(s_key);
+
+		int oldDataCount = tab->GetDataCount();
+
+		tab->ClearEff();
+		tab->DelRecord(_key);
+
+		int newDataCount = tab->GetDataCount();
+
+		RefreshDataGridView();
+		RefreshEff();
+
+		strRes = oldDataCount == newDataCount ? "Число записей в таблице не изменилось" :
+			"Запись была удалена";
+	}
+
+	PrintResult(strRes);
 }
 };
 }

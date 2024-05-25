@@ -180,7 +180,6 @@ void TTreeTable::Reset() {
 	if (IsEmpty()) throw std::exception("EmptyTab");
 
 	this->ClearStack();
-
 	pCurr = pRoot;
 
 	while (pCurr != nullptr) {
@@ -209,7 +208,7 @@ void TTreeTable::GoNext() {
 	else {	// нет правого потомка
 		// т.к. нет правого потомка, то нужно искать бќльшее значение на предыдущих €русах
 		do {
-			if (pCurr = pRoot) { pCurr = nullptr; break; }
+			if (pCurr == pRoot) { pCurr = nullptr; break; }
 
 			pPrev = pCurr;
 			st.pop();
@@ -217,6 +216,7 @@ void TTreeTable::GoNext() {
 		} while (pCurr->pRight == pPrev);
 		// если pCurr изначально был левым потомком своего непосредственного предка, то цикл сработает 1 раз
 	}
+	
 }
 
 bool TTreeTable::IsEnd() const noexcept { return pCurr == nullptr; }

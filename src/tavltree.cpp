@@ -94,8 +94,8 @@ int TAVLTree::LeftBalance(TTreeNode*& pointer) {
 
 			// высота дерева с корнем pointer была h+3, стала h+2; высота уменьшилась на 1
 			break;
-		default:
-			throw std::exception("Kak?");
+		default: break;
+			//throw std::exception("Kak?");
 		}
 		
 		res = H_OK;
@@ -156,7 +156,7 @@ int TAVLTree::RightBalance(TTreeNode*& pointer) {
 			pointer->bal = BAL_OK;
 
 			break;
-		default: throw std::exception("Kak?"); break; 
+		default: break; // throw std::exception("Kak?"); break;
 		}
 
 		res = H_OK;
@@ -262,7 +262,7 @@ int TAVLTree::RemoveMin(TTreeNode*& pointer) {
 	return res;
 }
 
-int TAVLTree::InsRecord(TTreeNode*& pointer, const TKey& _key, const TValue& _val) {
+int TAVLTree::Insert(TTreeNode*& pointer, const TKey& _key, const TValue& _val) {
 	int res = H_OK;
 
 	++Eff;
@@ -276,11 +276,13 @@ int TAVLTree::InsRecord(TTreeNode*& pointer, const TKey& _key, const TValue& _va
 	}
 	else if (pointer->rec.key == _key) throw std::exception("duplicate_key");
 	else if (_key < pointer->rec.key) {
-		if (InsRecord(pointer->pLeft, _key, _val) == H_INC) 
+		int tmp = Insert(pointer->pLeft, _key, _val);
+		if (tmp == H_INC) 
 			res = LeftBalance(pointer);
 	}
 	else { // _key > pointer->rec.key
-		if (InsRecord(pointer->pRight, _key, _val) == H_INC)
+		int tmp = Insert(pointer->pRight, _key, _val);
+		if (tmp == H_INC)
 			res = RightBalance(pointer);
 	}
 
@@ -290,21 +292,21 @@ int TAVLTree::InsRecord(TTreeNode*& pointer, const TKey& _key, const TValue& _va
 void TAVLTree::InsRecord(const TKey& _key, const TValue& _val) { 
 	if (FindRecord(_key)) throw std::exception("duplicate_key");
 
-	InsRecord(pRoot, _key, _val);
+	Insert(pRoot, _key, _val);
 }
 
-int TAVLTree::DelRecord(TTreeNode*& pointer, const TKey& _key) {
+int TAVLTree::Delete(TTreeNode*& pointer, const TKey& _key) {
 	++Eff;
 
 	int res;
 
 	if (pointer == nullptr) return H_OK;
 	else if (_key < pointer->rec.key) {
-		res = DelRecord(pointer->pLeft, _key);
+		res = Delete(pointer->pLeft, _key);
 		if (res != H_OK) res = RightBalance(pointer);
 	}
 	else if (_key > pointer->rec.key) {
-		res = DelRecord(pointer->pRight, _key);
+		res = Delete(pointer->pRight, _key);
 		if (res != H_OK) res = LeftBalance(pointer);
 	}
 	else {
@@ -350,7 +352,7 @@ int TAVLTree::DelRecord(TTreeNode*& pointer, const TKey& _key) {
 void TAVLTree::DelRecord(const TKey& _key) { 
 	if (!FindRecord(_key)) return;
 	
-	DelRecord(pRoot, _key); 
+	Delete(pRoot, _key); 
 }
 
 /*

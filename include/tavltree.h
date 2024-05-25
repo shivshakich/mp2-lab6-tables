@@ -19,8 +19,8 @@ class TAVLTree : public TTreeTable {
 protected:
 	TTreeNode* FindMin(TTreeNode*);
 	int RemoveMin(TTreeNode*&);
-	int InsRecord(TTreeNode*&, const TKey&, const TValue&);
-	int DelRecord(TTreeNode*&, const TKey&);
+	int Insert(TTreeNode*&, const TKey&, const TValue&);
+	int Delete(TTreeNode*&, const TKey&);
 
 	int LeftBalance(TTreeNode*&);
 	int RightBalance(TTreeNode*&);
