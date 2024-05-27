@@ -12,7 +12,7 @@
 
 namespace CppWinForm1 {
 
-	const std::string ABC = "0123456789"; //abcde"; //fghijklmnopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ";
+	const std::string ABC = "0123456789abcde"; //fghijklmnopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ";
 	const int LEN_ABC = ABC.length();
 
 	std::string GetRandKey(int _len = 10) {
@@ -59,7 +59,7 @@ namespace CppWinForm1 {
 	public:
 		MyForm(void)
 		{
-			
+			tab = new TScanTable;
 
 			InitializeComponent();
 			//
@@ -74,7 +74,11 @@ namespace CppWinForm1 {
 		/// </summary>
 		~MyForm()
 		{
-			delete tab;
+			if (tab) {
+				TTable* pDel = tab;
+				tab = nullptr;
+				delete pDel;
+			}
 
 			if (components)
 			{
@@ -82,9 +86,9 @@ namespace CppWinForm1 {
 			}
 		}
 	private: System::Windows::Forms::DataGridView^ dataGridView1;
-	private: System::Windows::Forms::DataGridViewButtonColumn^ Column1;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column2;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column3;
+
+
+
 	private: System::Windows::Forms::TextBox^ textBox1;
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ label2;
@@ -118,8 +122,23 @@ namespace CppWinForm1 {
 
 
 	protected:
-		int count;
-		TTable* tab = new TScanTable;;
+
+
+	private: System::Windows::Forms::RadioButton^ radioButton5;
+	private: System::Windows::Forms::Label^ label8;
+	private: System::Windows::Forms::TextBox^ textBox6;
+	protected:
+
+	private:
+		/// <summary>
+		/// Required designer variable.
+		/// </summary>
+		
+		TTable* tab;
+	private: System::Windows::Forms::DataGridViewButtonColumn^ Column1;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column2;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Column3;
+		   int count;
 
 		void RefreshDataGridView() {
 			dataGridView1->Rows->Clear();
@@ -146,15 +165,6 @@ namespace CppWinForm1 {
 			textBox2->Text = s_res;
 		}
 
-	private: System::Windows::Forms::RadioButton^ radioButton5;
-	private: System::Windows::Forms::Label^ label8;
-	private: System::Windows::Forms::TextBox^ textBox6;
-	protected:
-
-	private:
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
 		System::ComponentModel::Container ^components;
 
 #pragma region Windows Form Designer generated code
@@ -165,9 +175,6 @@ namespace CppWinForm1 {
 		void InitializeComponent(void)
 		{
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
-			this->Column1 = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
-			this->Column2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Column3 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
@@ -194,6 +201,9 @@ namespace CppWinForm1 {
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->textBox6 = (gcnew System::Windows::Forms::TextBox());
+			this->Column1 = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			this->Column2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column3 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
@@ -213,33 +223,11 @@ namespace CppWinForm1 {
 			this->dataGridView1->TabIndex = 0;
 			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::dataGridView1_CellContentClick);
 			// 
-			// Column1
-			// 
-			this->Column1->HeaderText = L"[DELETE]";
-			this->Column1->MinimumWidth = 6;
-			this->Column1->Name = L"Column1";
-			this->Column1->Width = 75;
-			// 
-			// Column2
-			// 
-			this->Column2->HeaderText = L"KEY";
-			this->Column2->MinimumWidth = 6;
-			this->Column2->Name = L"Column2";
-			this->Column2->ReadOnly = true;
-			this->Column2->Width = 125;
-			// 
-			// Column3
-			// 
-			this->Column3->HeaderText = L"VALUE";
-			this->Column3->MinimumWidth = 6;
-			this->Column3->Name = L"Column3";
-			this->Column3->ReadOnly = true;
-			this->Column3->Width = 400;
-			// 
 			// textBox1
 			// 
 			this->textBox1->Location = System::Drawing::Point(133, 417);
 			this->textBox1->Name = L"textBox1";
+			this->textBox1->ReadOnly = true;
 			this->textBox1->Size = System::Drawing::Size(100, 22);
 			this->textBox1->TabIndex = 1;
 			// 
@@ -265,6 +253,7 @@ namespace CppWinForm1 {
 			// 
 			this->textBox2->Location = System::Drawing::Point(323, 417);
 			this->textBox2->Name = L"textBox2";
+			this->textBox2->ReadOnly = true;
 			this->textBox2->Size = System::Drawing::Size(440, 22);
 			this->textBox2->TabIndex = 4;
 			// 
@@ -358,6 +347,7 @@ namespace CppWinForm1 {
 			this->radioButton1->TabStop = true;
 			this->radioButton1->Text = L"Неупорядоченная таблица";
 			this->radioButton1->UseVisualStyleBackColor = true;
+			this->radioButton1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton1_CheckedChanged);
 			// 
 			// label3
 			// 
@@ -480,6 +470,29 @@ namespace CppWinForm1 {
 			this->textBox6->Name = L"textBox6";
 			this->textBox6->Size = System::Drawing::Size(187, 22);
 			this->textBox6->TabIndex = 18;
+			// 
+			// Column1
+			// 
+			this->Column1->HeaderText = L"[DELETE]";
+			this->Column1->MinimumWidth = 6;
+			this->Column1->Name = L"Column1";
+			this->Column1->Width = 75;
+			// 
+			// Column2
+			// 
+			this->Column2->HeaderText = L"KEY";
+			this->Column2->MinimumWidth = 6;
+			this->Column2->Name = L"Column2";
+			this->Column2->ReadOnly = true;
+			this->Column2->Width = 125;
+			// 
+			// Column3
+			// 
+			this->Column3->HeaderText = L"VALUE";
+			this->Column3->MinimumWidth = 6;
+			this->Column3->Name = L"Column3";
+			this->Column3->ReadOnly = true;
+			this->Column3->Width = 600;
 			// 
 			// MyForm
 			// 
@@ -623,9 +636,10 @@ private: System::Void dataGridView1_CellContentClick(System::Object^ sender, Sys
 
 	std::string strRes = "Вызов Delete не произошёл";
 
-	if (tab->GetDataCount() != 0) {
+	int _row = dataGridView1->CurrentCell->RowIndex;
 
-		int _row = dataGridView1->CurrentCell->RowIndex;
+	if (_row < tab->GetDataCount()) {
+
 		//int _column = dataGridView1->CurrentCell->ColumnIndex;
 		//PrintResult(std::to_string(_row) + ' ' + std::to_string(_column));
 
@@ -647,6 +661,9 @@ private: System::Void dataGridView1_CellContentClick(System::Object^ sender, Sys
 	}
 
 	PrintResult(strRes);
+}
+private: System::Void radioButton1_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+
 }
 };
 }
