@@ -21,7 +21,7 @@ protected:
 	void CopyTree(const TTreeNode* const _from, TTreeNode* _to);
 	void ClearTree(TTreeNode*);
 	void ClearTree() { ClearTree(pRoot); }
-	ostream& Print(ostream&, TTreeNode*);
+	ostream& Print(ostream&, TTreeNode*, int shift);
 public:
 	TTreeTable();
 	TTreeTable(const TRecord&);
@@ -45,5 +45,18 @@ public:
 	TValue GetValue() const override;
 	void SetValue(const TValue&);
 
+	/*
+	TKey GetRootKey() const noexcept {
+		if (pRoot == nullptr) return "~";
+		else return pRoot->rec.key;
+	}
+	*/
+
+	//friend TTreeNode& GetRootKey
+	/*
+	friend std::ostream& Print(const TTreeNode, std::ostream& os = std::cout, int shift = 0) {
+		if ()
+	}
+	*/
 	ostream& Print(ostream& = std::cout);
 };

@@ -85,7 +85,7 @@ void TScanTable::InsRecord(const TKey& _key, const TValue& _val) {
 	}
 	else if (IsFull() && Size == TAB_MAX_SIZE) throw std::exception("Max_DataCount");
 	else {		// IsFull() && Size != TAB_MAX_SIZE
-		size_t tmp = Size * 2 + 1 < TAB_MAX_SIZE ? Size * 2 : TAB_MAX_SIZE;		// наименьшее между Size*2+1 и TAB_MAX_SIZE
+		size_t tmp = Size * 2 + 1 < TAB_MAX_SIZE ? Size * 2 + 1 : TAB_MAX_SIZE;		// наименьшее между Size*2+1 и TAB_MAX_SIZE
 		TRecord* pointer = new TRecord[tmp];
 		if (pointer == nullptr) throw std::exception("TabNoMem");
 
