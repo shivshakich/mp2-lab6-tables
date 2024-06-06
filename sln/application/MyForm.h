@@ -147,6 +147,7 @@ namespace CppWinForm1 {
 
 
 
+
 		   int count;
 
 		void RefreshDataGridView() {

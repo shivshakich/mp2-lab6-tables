@@ -22,7 +22,7 @@ protected:
 	bool LinSearch(const TKey&) noexcept;
 	bool BinSearch(const TKey&) noexcept;
 public:
-	TSortTable(int = 0);
+	TSortTable(int = TAB_MAX_SIZE);
 	TSortTable(const TRecord&);
 	TSortTable(const TScanTable&, SortType = MERGE);
 	TSortTable(const TSortTable&);

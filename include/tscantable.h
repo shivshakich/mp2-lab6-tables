@@ -5,7 +5,7 @@
 // неупорядоченная таблица на массиве 
 class TScanTable : public TArrayTable {
 public:
-	TScanTable(int = 0);
+	TScanTable(int = TAB_MAX_SIZE);
 	TScanTable(const TArrayTable&);
 	TScanTable(const TScanTable&);
 	TScanTable(const TRecord& rec) : TArrayTable(rec) {}

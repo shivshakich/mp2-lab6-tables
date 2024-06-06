@@ -23,7 +23,7 @@
 #include "tpolynom.h"
 
 // максимальное число записей в таблице
-#define TAB_MAX_SIZE 100
+#define TAB_MAX_SIZE 2000
 
 typedef std::string TKey;
 typedef TPolynom TValue;
