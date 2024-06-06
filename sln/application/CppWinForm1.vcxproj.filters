@@ -26,5 +26,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="text_file.txt" />
+    <Text Include="tmp_file.txt" />
   </ItemGroup>
 </Project>

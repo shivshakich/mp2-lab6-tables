@@ -34,12 +34,11 @@ public:
 	TKey GetKey() const override;
 	TValue GetValue() const override;
 
-	friend std::ostream& Print(const TArrayHash& h, std::ostream& os = std::cout) {
-		for (int i = 0; i < h.Size; ++i) {
-			std::string _key = h.pRecs[i].key;
+	ostream& Print(ostream& os) override {
+		for (int i = 0; i < Size; ++i) {
+			std::string _key = pRecs[i].key;
 
-			if (_key == EMPTYREC_KEY || _key == DELREC_KEY) os << _key << std::endl;
-			else os << _key << ' ' << h.pRecs[i].val.ToString() << std::endl;
+			os << '[' << i << ']' << '\t' << _key << std::endl;
 		}
 
 		return os;

@@ -240,20 +240,3 @@ void TTreeTable::SetValue(const TValue& _val) {
 
 	pCurr->rec.val = TValue(_val);
 }
-
-// PRINT
-
-ostream& TTreeTable::Print(ostream& os, TTreeNode* p, int shift) {
-	if (p == nullptr) return os;
-	Print(os, p->pLeft, shift+1);
-
-	os << '[' << shift << ']' << '\t';
-	for (int i = 0; i < shift; ++i) os << ' ';
-	os << p->rec.key << " = " << p->rec.val << '\n';
-
-	Print(os, p->pRight, shift+1);
-	
-	return os;
-}
-
-ostream& TTreeTable::Print(ostream& os) { return Print(os, pRoot, 0); }

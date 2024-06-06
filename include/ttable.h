@@ -19,10 +19,11 @@
 
 #include <iostream>
 #include <exception>
+#include <vector>
 #include "tpolynom.h"
 
 // максимальное число записей в таблице
-#define TAB_MAX_SIZE 20000
+#define TAB_MAX_SIZE 100
 
 typedef std::string TKey;
 typedef TPolynom TValue;
@@ -66,4 +67,6 @@ public:
 
 		return os;
 	}
+
+	virtual ostream& Print(ostream& os) = 0;
 };

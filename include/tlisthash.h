@@ -30,4 +30,21 @@ public:
 	TKey GetKey() const override;
 	TValue GetValue() const override;
 	void SetValue(TValue&);
+
+	ostream& Print(ostream& os) override {
+		for (int _currList = 0; _currList < Size; ++_currList) {
+			std::list<TRecord>::iterator _currPos = pList[_currList].begin();
+
+			if (_currPos == pList[_currList].end())
+				os << '[' << _currList << ']' << ' ' << "is empty" << std::endl;
+			else {
+				while (_currPos != pList[_currList].end()) {
+					os << '[' << _currList << ']' << '\t' << _currPos->key << std::endl;
+					++_currPos;
+				}
+			}
+		}
+		
+		return os;
+	}
 };

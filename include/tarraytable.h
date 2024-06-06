@@ -52,4 +52,11 @@ public:
 	bool IsFull() const noexcept;
 
 	// FindRecord, InsRecord, DelRecord будут реализованы в классе-потомке
+
+	ostream& Print(ostream& os) override {
+		for (int i = 0; i < DataCount; ++i)
+			os << '[' << i << ']' << '\t' << Arr[i].key << std::endl;
+
+		return os;
+	}
 };

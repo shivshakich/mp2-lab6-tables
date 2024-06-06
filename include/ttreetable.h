@@ -21,7 +21,20 @@ protected:
 	void CopyTree(const TTreeNode* const _from, TTreeNode* _to);
 	void ClearTree(TTreeNode*);
 	void ClearTree() { ClearTree(pRoot); }
-	ostream& Print(ostream&, TTreeNode*, int shift);
+
+	ostream& Print(ostream& os, TTreeNode* p, int shift) {
+		if (p == nullptr) return os;
+
+		os << '[' << shift << ']' << '\t';
+		for (int i = 0; i < shift; ++i) os << ' ';
+		os << p->rec.key << std::endl;
+
+		Print(os, p->pLeft, shift + 1);
+		Print(os, p->pRight, shift + 1);
+
+		return os;
+	}
+
 public:
 	TTreeTable();
 	TTreeTable(const TRecord&);
@@ -58,5 +71,6 @@ public:
 		if ()
 	}
 	*/
-	ostream& Print(ostream& = std::cout);
+
+	ostream& Print(ostream& os) override { return Print(os, pRoot, 0); }
 };
