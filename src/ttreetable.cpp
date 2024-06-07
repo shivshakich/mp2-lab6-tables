@@ -177,7 +177,8 @@ void TTreeTable::Reset() {
 	// 1) переместить pCurr на самую левую вершину
 	// 2) записать в st путь до pCurr, включая pRoot и pCurr
 
-	if (IsEmpty()) throw std::exception("EmptyTab");
+	if (IsEmpty()) return;
+	//if (IsEmpty()) throw std::exception("EmptyTab");
 
 	this->ClearStack();
 	pCurr = pRoot;

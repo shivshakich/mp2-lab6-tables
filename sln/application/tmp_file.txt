@@ -1,101 +1,48 @@
-[0] is empty
-[1] is empty
-[2] is empty
-[3] is empty
-[4] is empty
-[5] is empty
-[6] is empty
-[7] is empty
-[8] is empty
-[9] is empty
-[10] is empty
-[11] is empty
-[12] is empty
-[13] is empty
-[14] is empty
-[15] is empty
-[16] is empty
-[17] is empty
-[18] is empty
-[19] is empty
-[20]	4152316882
-[21] is empty
-[22]	1541373585
-[23] is empty
-[24]	2820552767
-[24]	1159083872
-[25] is empty
-[26]	1436392198
-[27] is empty
-[28] is empty
-[29] is empty
-[30] is empty
-[31]	7980147555
-[32]	9866238262
-[33] is empty
-[34] is empty
-[35] is empty
-[36]	9415666667
-[37] is empty
-[38] is empty
-[39] is empty
-[40] is empty
-[41] is empty
-[42] is empty
-[43] is empty
-[44] is empty
-[45] is empty
-[46] is empty
-[47] is empty
-[48] is empty
-[49] is empty
-[50] is empty
-[51] is empty
-[52] is empty
-[53] is empty
-[54] is empty
-[55] is empty
-[56] is empty
-[57] is empty
-[58] is empty
-[59] is empty
-[60] is empty
-[61] is empty
-[62] is empty
-[63] is empty
-[64] is empty
-[65] is empty
-[66] is empty
-[67] is empty
-[68] is empty
-[69] is empty
-[70] is empty
-[71] is empty
-[72] is empty
-[73] is empty
-[74] is empty
-[75] is empty
-[76] is empty
-[77] is empty
-[78] is empty
-[79] is empty
-[80] is empty
-[81] is empty
-[82] is empty
-[83] is empty
-[84] is empty
-[85] is empty
-[86] is empty
-[87] is empty
-[88] is empty
-[89] is empty
-[90] is empty
-[91] is empty
-[92] is empty
-[93] is empty
-[94] is empty
-[95] is empty
-[96] is empty
-[97] is empty
-[98] is empty
-[99] is empty
+[0]	4168544481
+[1]	 0745560890
+[2]	  0502813631
+[3]	   0155671382
+[4]	    0145415468
+[4]	    0411236015
+[3]	   0543440825
+[4]	    0589828763
+[2]	  1438078799
+[3]	   1239306062
+[4]	    1186569462
+[4]	    1295390185
+[5]	     1259886063
+[3]	   2502150387
+[4]	    1523075445
+[5]	     1944661298
+[6]	      1658903855
+[6]	      2227184109
+[4]	    3597864865
+[5]	     3119672155
+[5]	     3776707968
+[1]	 7360866099
+[2]	  5573198972
+[3]	   4983870842
+[4]	    4230069480
+[5]	     4619589919
+[6]	      4301797515
+[6]	      4631135668
+[4]	    5154813056
+[3]	   6079655736
+[4]	    5913593215
+[5]	     6013687346
+[4]	    7276220891
+[5]	     7141052334
+[5]	     7297838996
+[2]	  9065522655
+[3]	   8208360851
+[4]	    7887427819
+[5]	     7687384794
+[5]	     7918055001
+[4]	    8551699728
+[5]	     8282446987
+[3]	   9686885923
+[4]	    9577508938
+[5]	     9100638302
+[5]	     9633618482
+[4]	    9860257744
+[5]	     9812227278

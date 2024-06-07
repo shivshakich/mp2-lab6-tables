@@ -7,7 +7,7 @@
 //		v				v							v					//
 //	[TArrayTable]	[THashTable]				[TTreeTable]			//
 //		|				|							|					//
-//		|				+---------------+			+-----------+		//
+//		|				+---------------+			+----X------+		//
 //		|				|				|			|			|		//
 //		v				v				v			v			v		//
 //	[TScanTable]	[TArrayHash]	[TListHash]	[TAVLTree]	[TRBTRee]	//
@@ -23,7 +23,7 @@
 #include "tpolynom.h"
 
 // максимальное число записей в таблице
-#define TAB_MAX_SIZE 2000
+#define TAB_MAX_SIZE 100
 
 typedef std::string TKey;
 typedef TPolynom TValue;
